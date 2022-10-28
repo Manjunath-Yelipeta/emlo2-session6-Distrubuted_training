@@ -1,14 +1,10 @@
 import pyrootutils
+import os
 
 root = pyrootutils.setup_root(
     search_from=__file__,
     indicator=[".git", "pyproject.toml"],
-    pythonpath=True,
-    dotenv=True,
-)
-
-# ------------------------------------------------------------------------------------ #
-# `pyrootutils.setup_root(...)` is recommended at the top of each start file
+    pythonpath=True,tart file
 # to make the environment more robust and consistent
 #
 # the line above searches for ".git" or "pyproject.toml" in present and parent dirs
@@ -105,15 +101,16 @@ def train(cfg: DictConfig) -> Tuple[dict, dict]:
     torch.jit.save(scripted_model, f"{cfg.paths.output_dir}/model.script.pt")
 
     log.info(f"Saving traced model to {cfg.paths.output_dir}/model.script.pt")
-
-    if cfg.get("test"):
-        log.info("Starting testing!")
-        ckpt_path = trainer.checkpoint_callback.best_model_path
-        if ckpt_path == "":
-            log.warning("Best ckpt not found! Using current weights for testing...")
-            ckpt_path = None
-        trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
-        log.info(f"Best ckpt path: {ckpt_path}")
+    value = os.getenv('NODE_RANK',default=None)
+    if value == 0:
+        if cfg.get("test"):
+            log.info("Starting testing!")
+            ckpt_path = trainer.checkpoint_callback.best_model_path
+            if ckpt_path == "":
+                log.warning("Best ckpt not found! Using current weights for testing...")
+                ckpt_path = None
+            trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
+            log.info(f"Best ckpt path: {ckpt_path}")
 
     test_metrics = trainer.callback_metrics
 
