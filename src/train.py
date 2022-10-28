@@ -4,7 +4,9 @@ import os
 root = pyrootutils.setup_root(
     search_from=__file__,
     indicator=[".git", "pyproject.toml"],
-    pythonpath=True,tart file
+    pythonpath=True,
+    dotenv=True,
+)
 # to make the environment more robust and consistent
 #
 # the line above searches for ".git" or "pyproject.toml" in present and parent dirs
