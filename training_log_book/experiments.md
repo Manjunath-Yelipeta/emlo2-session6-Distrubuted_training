@@ -5,6 +5,12 @@
 - The highest batch size achieved is 48
 - The best checkpoint is stored into AWS S3
 
+**Link to Tensorboard logs on Tensorboard.dev**
+
+```
+https://tensorboard.dev/experiment/UGRDvNZNSJGVYN8j7yjXoA
+```
+
 **GPU Utilization & GPU memory usage NVIDIA SMI Dump**
 
 <p align="center">
